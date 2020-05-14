@@ -1,14 +1,14 @@
 // const webpack = require("webpack");
 const path = require("path");
-
+let env = process.env.NODE_ENV;
 module.exports = {
-    publicPath: "/",
+    // publicPath: "/",
 
     // 如果是hash模式
     // publicPath: env !== "development" ? "./" : "/",
 
     // 如果是history模式
-    // publicPath: env !== "development" ? "/" : "/",
+    publicPath: env !== "development" ? "/" : "/",
 
     //去除eslint 校验代码
     lintOnSave: false,
@@ -30,10 +30,10 @@ module.exports = {
     // 让样式找到源
     css: {
         sourceMap: true,
-        loaderOptions:{
+        loaderOptions: {
             scss: {
-                prependData: `@import "Assets/resources/common.scss";`
-              },
+                prependData: `@import "Assets/resources/*.scss";`
+            },
         }
     },
 
@@ -45,7 +45,7 @@ module.exports = {
         disableHostCheck: true,
         proxy: {
             "/api": {
-                target: "127.0.0.1", //对应跨域的接口
+                target: "http://192.168.0.102:5000", //对应跨域的接口
                 changeOrigin: true,
                 ws: false,
                 pathRewrite: {
@@ -62,13 +62,14 @@ module.exports = {
         config.resolve.alias.set("@", path.resolve(__dirname, "./src"));
     },
 
-    configureWebpack: config => {},
+    configureWebpack: config => { },
 
     pluginOptions: {
         'style-resources-loader': {
             preProcessor: 'scss',
             patterns: [
-                path.resolve(__dirname, 'src/assets/reources/*.scss'),
+                //加上自己的文件路径，不能使用别名
+                path.resolve(__dirname, 'src/assets/resources/common.scss'),
             ]
         }
     }

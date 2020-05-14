@@ -6,16 +6,24 @@
 </template>
 
 <script>
+	import { mapState } from "vuex";
 	export default {
-		name: "vmark",
+		name: "list",
 		data() {
 			return {};
 		},
 		created() {
-			console.log(11)
+			console.log(this.$getUser)
 		},
 		watch: {},
-		mounted() { },
+		mounted() {
+
+		},
+		computed: {
+			...mapState({
+				$getUser: state => state.user,
+			})
+		},
 		methods: {}
 	};
 </script>
