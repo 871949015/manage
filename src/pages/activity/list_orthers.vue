@@ -2,9 +2,8 @@
 <template>
 	<div class="main">
 		<div class="top-bar">
-			<div class="title">活动列表</div>
 			<div class="button">
-				<el-button type="text" @click="add">新增</el-button>
+				<el-button type="text" @click="back">返回</el-button>
 			</div>
 		</div>
 		<div class="list-box">
@@ -17,42 +16,40 @@
 				max-height="700"
 			>
 				<el-table-column prop="id" label="id" width="100"></el-table-column>
-				<el-table-column label="活动名称" width="300">
+				<el-table-column label="用户ID" width="100">
 					<template slot-scope="scope">
-						<div class="name">{{scope.row.name}}</div>
+						<div class="name">{{scope.row.user_id}}</div>
 					</template>
 				</el-table-column>
-				<el-table-column label="可参与/已参与" width="120">
-					<template slot-scope="scope">{{scope.row.join_number}}/{{scope.row.joined_number}}</template>
-				</el-table-column>
-				<el-table-column label="活动时间">
+				<el-table-column label="用户微信名" width="300">
 					<template slot-scope="scope">
-						<div class="time">
-							<div>{{scope.row.date_begin}}</div>
-							<div class="float">~</div>
-							<div>{{scope.row.date_end}}</div>
-						</div>
+						<div class="name">{{!!scope.row.user.other_data ? scope.row.user.other_data.nickname : 'unknow'}}</div>
 					</template>
 				</el-table-column>
-				<el-table-column label="参与时间">
+				<el-table-column label="用户学号" width="300">
 					<template slot-scope="scope">
-						<div class="time">
-							<div>{{scope.row.time_join_begin}}</div>
-							<div class="float">~</div>
-							<div>{{scope.row.time_join_end}}</div>
-						</div>
+						<div class="name">{{!!scope.row.user.student_number ? scope.row.user.student_number : '未填写'}}</div>
+					</template>
+				</el-table-column>
+				<el-table-column label="用户姓名" width="300">
+					<template slot-scope="scope">
+						<div class="name">{{!!scope.row.user.student_name ? scope.row.user.student_name : '未填写'}}</div>
 					</template>
 				</el-table-column>
 				<el-table-column label="活动状态">
 					<template slot-scope="scope">
-						<div>{{statusText(scope.row.status)}}</div>
+						<div>{{statusText(scope.row.activity_status)}}</div>
 					</template>
 				</el-table-column>
 				<el-table-column label="操作" fixed="right" width="120">
 					<template slot-scope="scope">
-						<el-button @click="handleCheck(scope.row.id)" type="text" size="small">查看</el-button>
-						<el-button @click="handleEdit(scope.row.id)" type="text" size="small">编辑</el-button>
-						<el-button @click="handleDel(scope.row.id)" type="text" size="small">删除</el-button>
+						<el-button
+							@click="handleCheck(scope.row.id,scope.$index)"
+							type="text"
+							size="small"
+							v-if="scope.row.activity_status == 0"
+						>已参与</el-button>
+						<div v-else>已参与</div>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -73,6 +70,7 @@
 		name: "list",
 		data() {
 			return {
+				id: this.$route.params.id,
 				loading: true,
 				totalPage: 1,
 				list: [],
@@ -83,8 +81,11 @@
 			this.get_list()
 		},
 		methods: {
+			back() {
+				this.$router.go(-1)
+			},
 			async get_list() {
-				const res = await this.$api.activity_list({ page: this.currentPage, per_page: 9 });
+				const res = await this.$api.activity_orthers({ id: this.id, page: this.currentPage, per_page: 9 });
 				if (res.status == 200) {
 					if (res.data.status == 1) {
 						if (res.data.total_page != this.totalPage) {
@@ -95,46 +96,23 @@
 					}
 				}
 			},
-			async delete(id) {
-				const res = await this.$api.activity_delete({ params: { id: id } });
+			async handleCheck(val, key) {
+				const loading = this.$loading();
+				const res = await this.$api.activity_orthers_update({ id: val, status: 1 }).catch(res => {
+					loading.close();
+				});
 				if (res.status == 200) {
 					if (res.data.status == 1) {
 						this.$message({
-							message: "删除成功",
+							message: "修改成功",
 							type: "success",
 							duration: 1000,
 						})
-						this.get_list()
-					} else {
-						this.$message({
-							message: res.data.msg,
-							type: "warning",
-							duration: 1000,
-						})
-						this.loading = false
+						this.list[key].activity_status = 1;
 					}
-				} else {
-					this.loading = false
+
 				}
-			},
-			add() {
-				this.$router.push({ name: "activity_update" });
-			},
-			handleCheck(val) {
-				this.$router.push({ name: "activity_list_orhters", params: { id: val } });
-			},
-			handleEdit(val) {
-				this.$router.push({ name: "activity_update", params: { id: val } });
-			},
-			handleDel(val) {
-				this.$confirm('是否删除改活动?', '提示', {
-					confirmButtonText: '确定',
-					cancelButtonText: '取消',
-					type: 'warning'
-				}).then(() => {
-					this.loading = true;
-					this.delete(val)
-				})
+				loading.close();
 			},
 			handleCurrentChange(val) {
 				if (!this.loading) {
@@ -145,9 +123,9 @@
 			statusText(val) {
 				let text = '';
 				if (val == 1) {
-					text = '进行中';
+					text = '已参与';
 				} else if (val == 0) {
-					text = '已结束';
+					text = '未参与';
 				}
 				return text
 			}

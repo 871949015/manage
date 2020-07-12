@@ -38,9 +38,19 @@ const routes = [{
     component: () => import( /* webpackChunkName: "home" */ 'Pages/activity/update.vue'),
   },
   {
+    path: 'activity/list_orthers',
+    name: 'activity_list_orhters',
+    component: () => import( /* webpackChunkName: "home" */ 'Pages/activity/list_orthers.vue'),
+  },
+  {
     path: 'user/list',
     name: 'user_list',
     component: () => import( /* webpackChunkName: "home" */ 'Pages/user/list.vue'),
+  },
+  {
+    path: 'user/update',
+    name: 'user_update',
+    component: () => import( /* webpackChunkName: "home" */ 'Pages/user/update.vue'),
   },
   {
     path: 'home/about',

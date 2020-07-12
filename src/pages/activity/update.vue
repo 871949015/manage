@@ -62,7 +62,7 @@
 <script>
 	import { mapState } from "vuex";
 	export default {
-		name: "about",
+		name: "update",
 		data() {
 			var checkNum = (rule, value, callback) => {
 				if (!value) {
@@ -96,15 +96,20 @@
 					date2: [
 						{ required: true, message: '请选择时间', trigger: 'change' }
 					],
-					num: [{ validator: checkNum, trigger: 'blur' }
+					num: [{ required: true, validator: checkNum, trigger: 'blur' }
 					],
 					type: [
 						{ required: true, message: '请选择活动类型', trigger: 'change' }
 					],
 					desc: [
-						{ required: true, message: '请填写活动描述', trigger: 'blur' }
+						{ message: '请填写活动描述', trigger: 'blur' }
 					]
 				}			};
+		},
+		computed: {
+			...mapState({
+				$getUser: state => state.user,
+			})
 		},
 		created() {
 			if (this.id) {
@@ -141,6 +146,11 @@
 									}, 1000)
 								} else {
 									this.loading = false;
+									this.$message({
+										message: res.data.msg,
+										type: "warning",
+										duration: 1000,
+									})
 								}
 							}).catch(() => {
 								this.loading = false;
@@ -212,11 +222,6 @@
 					})
 				}
 			}
-		},
-		computed: {
-			...mapState({
-				$getUser: state => state.user,
-			})
 		}
 	};
 </script>

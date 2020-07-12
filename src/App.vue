@@ -1,35 +1,26 @@
 <template>
-	<transition name="fade">
+	<div id="app">
 		<router-view></router-view>
-	</transition>
+	</div>
 </template>
 
 <script>
-	// 日期格式化
-	Date.prototype.format = function (fmt) {
-		let o = {
-			"M+": this.getMonth() + 1,
-			"d+": this.getDate(),
-			"h+": this.getHours(),
-			"m+": this.getMinutes(),
-			"s+": this.getSeconds(),
-			"q+": Math.floor((this.getMonth() + 3) / 3),
-			"S": this.getMilliseconds()
-		};
-		if (/(Y+)/.test(fmt))
-			fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-		for (let k in o)
-			if (new RegExp("(" + k + ")").test(fmt))
-				fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-		return fmt;
-	};
+
 	export default {
-		name: "app"
+		name: 'App',
+
+		components: {
+
+		},
+
+		data: () => ({
+			//
+		}),
 	};
 </script>
-
 <style lang="scss">
 	@import "../src/assets/css/base";
+
 	.app-box {
 		width: 100%;
 		height: 100%;

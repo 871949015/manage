@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { Message } from 'element-ui';
-import router from '../router';
+// import router from '../router';
 import * as util from '../util/util'
 
 axios.defaults.baseURL = '/api'; //开发环境请求地址
@@ -56,8 +56,15 @@ axios.interceptors.response.use(response => {
 export const get_key = (parm) => axios.get('/user/get_key', parm);
 export const login = (parm) => axios.post('/user/manage_login', parm);
 export const token_test = (parm) => axios.post('/user/token_test', parm);
-export const get_activity_list = (parm) => axios.post('/activity/activity_list', parm);
+export const activity_list = (parm) => axios.post('/activity/activity_list', parm);
 export const activity_add = (parm) => axios.post('/activity/activity_add', parm);
 export const activity_get = (parm) => axios.get('/activity/activity_detail', parm);
 export const activity_update = (parm) => axios.post('/activity/activity_update', parm);
+export const activity_delete = (parm) => axios.get('/activity/activity_delete', parm);
+export const activity_orthers = (parm) => axios.post('/activity/activity_orthers', parm);
+export const activity_orthers_update = (parm) => axios.post('/activity/activity_orthers_update', parm);
+export const get_qiniu_token = (parm) => axios.get('/activity/get_qiniu_token', parm);
+export const user_list = (parm) => axios.post('/user/user_list', parm);
+export const user_get = (parm) => axios.get('/user/user_get', parm);
+export const user_update = (parm) => axios.post('/user/user_update', parm);
 

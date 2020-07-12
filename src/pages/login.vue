@@ -1,7 +1,6 @@
 <!-- 登录 -->
 <template>
 	<div class="login" @keyup.enter="login">
-		<img src="Assets/images/loginbg.jpg" alt />
 		<div class="box">
 			<div class="form" id="form">
 				<div class="login-title">
@@ -89,7 +88,7 @@
 									username: _data.data.nick_name,
 									userid: _data.data.id
 								}).then(() => {
-									this.$router.replace({ name: "vmain" });
+									this.$router.push({ name: "vmain" });
 								})
 							}
 						}
@@ -107,10 +106,10 @@
 		computed: {
 			verifyTip: {
 				get() {
-					return this.$util.validate({ type: 'user', value: this.username }) ? true : false;;
+					return this.$util.validate({ type: 'user', value: this.username }) ? true : false;
 				},
 				set() {
-					this.verifyAccount = this.$util.validate({ type: 'user', value: this.username }) ? true : false;;
+					this.verifyAccount = this.$util.validate({ type: 'user', value: this.username }) ? true : false;
 				}
 			}
 		}
@@ -121,7 +120,56 @@
 	.login {
 		width: 100vw;
 		height: 100vh;
-		background: url("../assets/images/loginbg.jpg");
+		animation: mymove 5s infinite;
+		animation-direction: alternate;
+		-webkit-animation-direction: alternate; /* Safari 和 Chrome */
+		-webkit-animation: mymove 5s infinite; /*Safari and Chrome*/
+
+		@keyframes mymove {
+			from {
+				background: linear-gradient(
+					top left,
+					#afeeee,
+					#4169e1
+				); /*渐变从左上角到右下角*/
+				background: -ms-linear-gradient(top left, #afeeee, #8a2be2);
+				background: -webkit-linear-gradient(top left, #afeeee, #8a2be2);
+				background: -moz-linear-gradient(top left, #afeeee, #8a2be2);
+			}
+			to {
+				background: linear-gradient(
+					top left,
+					#afeeee,
+					#4169e1
+				); /*渐变从左上角到右下角*/
+				background: -ms-linear-gradient(top left, #9370DB, #4169e1);
+				background: -webkit-linear-gradient(top left, #9370DB, #4169e1);
+				background: -moz-linear-gradient(top left, #9370DB, #4169e1);
+			}
+		}
+
+		@-webkit-keyframes mymove /*Safari and Chrome*/ {
+			from {
+				background: linear-gradient(
+					top left,
+					#afeeee,
+					#4169e1
+				); /*渐变从左上角到右下角*/
+				background: -ms-linear-gradient(top left, #afeeee, #8a2be2);
+				background: -webkit-linear-gradient(top left, #afeeee, #8a2be2);
+				background: -moz-linear-gradient(top left, #afeeee, #8a2be2);
+			}
+			to {
+				background: linear-gradient(
+					top left,
+					#afeeee,
+					#4169e1
+				); /*渐变从左上角到右下角*/
+				background: -ms-linear-gradient(top left, #9370DB, #4169e1);
+				background: -webkit-linear-gradient(top left, #9370DB, #4169e1);
+				background: -moz-linear-gradient(top left, #9370DB, #4169e1);
+			}
+		}
 
 		.box {
 			width: 400px;

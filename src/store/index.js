@@ -11,7 +11,7 @@ const type = {
 export default new Vuex.Store({
     state: {
         user: {
-            loginToken: util.getCookie('token') || null,     // 当前用户 token
+            token: util.getCookie('token') || null,     // 当前用户 token
             username: util.getCookie('username') || null, // 当前用户名称
             userid: util.getCookie('userid') || null,      // 当前用户id 
         }
@@ -26,7 +26,7 @@ export default new Vuex.Store({
     },
     mutations: {
         [type.SET_USER_INFO](state, val) {
-            state.user.loginToken = val.token || state.user.loginToken;
+            state.user.token = val.token || state.user.token;
             state.user.username = val.username || state.user.username;
             state.user.userid = val.userid || state.user.userid;
         }

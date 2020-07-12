@@ -11,7 +11,7 @@
 		<div class="right-btn">
 			<div>
 				<el-tooltip class="item" effect="dark" content="点击将退出此账号" placement="bottom">
-					<el-button type="danger" size="mini" icon="el-icon-switch-button" circle></el-button>
+					<el-button type="danger" size="mini" icon="el-icon-switch-button" circle @click="logout"></el-button>
 				</el-tooltip>
 			</div>
 		</div>
@@ -35,7 +35,18 @@
 		watch: {},
 		methods: {
 			//退出登录
-			logout() { }
+			logout() {
+				this.$util.setCookie('token', 0, 0);
+				this.$util.setCookie('username', 0, 0);
+				this.$util.setCookie('userid', 0, 0);
+				this.$store.dispatch('userInfo', {
+					token: null,
+					username: null,
+					userid: null,
+				}).then(() => {
+					this.$router.replace({ name: "login" });
+				})
+			}
 		}
 	};
 </script>
